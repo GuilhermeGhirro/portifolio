@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfólio de Guilherme Ghirro, desenvolvedor full-stack. React, Node, NestJS, TypeScript, testes e IA aplicada no dia a dia.">
+  <meta name="theme-color" content="#6f4e37">
+  <title>Guilherme Ghirro — Portfólio Full-stack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --white: #fbfaf8;
+      --paper: #f4f2ee;
+      --gray-100: #e8e6e2;
+      --gray-300: #c8c5bf;
+      --gray-600: #686560;
+      --gray-900: #292825;
+      --brown: #6f4e37;
+      --brown-dark: #4c3425;
+      --brown-soft: #b79378;
+      --shadow: 0 22px 60px rgba(55, 48, 43, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--gray-900);
+      background:
+        linear-gradient(rgba(69, 62, 57, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(69, 62, 57, 0.035) 1px, transparent 1px),
+        var(--white);
+      background-size: 32px 32px;
+      font-family: "Manrope", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      content: "";
+      opacity: 0.25;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .site-shell { min-height: 100vh; overflow: hidden; }
+
+    .nav-wrap {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      z-index: 15;
+      width: min(1120px, calc(100% - 32px));
+      transform: translateX(-50%);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 64px;
+      padding: 10px 12px 10px 20px;
+      border: 1px solid rgba(111, 78, 55, 0.14);
+      border-radius: 20px;
+      background: rgba(251, 250, 248, 0.86);
+      box-shadow: 0 12px 38px rgba(54, 48, 44, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; color: var(--white); background: var(--brown); font-family: "Bodoni Moda", serif; font-size: 15px; letter-spacing: -0.08em; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link { padding: 10px 14px; border-radius: 12px; color: var(--gray-600); font-size: 13px; font-weight: 600; text-decoration: none; transition: color 180ms ease, background 180ms ease; }
+    .nav-link:hover, .nav-link:focus-visible { color: var(--brown-dark); background: var(--paper); outline: none; }
+
+    .hero { position: relative; display: grid; min-height: 780px; padding: 150px max(24px, calc((100vw - 1120px) / 2)) 90px; align-items: center; }
+    .hero::after { position: absolute; top: 130px; right: -100px; width: 440px; height: 440px; border: 1px solid rgba(111, 78, 55, 0.14); border-radius: 50%; content: ""; box-shadow: inset 0 0 0 45px var(--paper), inset 0 0 0 46px rgba(111, 78, 55, 0.08); }
+    .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 72px; align-items: center; }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px; color: var(--brown); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; animation: reveal 700ms 80ms both; }
+    .eyebrow::before { width: 38px; height: 1px; content: ""; background: currentColor; }
+
+    .hero h1 { max-width: 790px; margin: 0; font-family: "Bodoni Moda", serif; font-size: clamp(66px, 8.6vw, 132px); font-weight: 600; line-height: 0.82; letter-spacing: -0.065em; animation: reveal 800ms 150ms both; }
+    .hero h1 span { display: block; color: var(--brown); font-style: italic; }
+    .hero-copy { max-width: 660px; margin: 34px 0 0 5px; color: var(--gray-600); font-size: clamp(16px, 1.45vw, 20px); line-height: 1.75; animation: reveal 800ms 230ms both; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; animation: reveal 800ms 310ms both; }
+    .hero-actions .ant-btn { height: 50px; padding-inline: 22px; border-radius: 14px; font-weight: 700; }
+
+    .profile-composition { position: relative; justify-self: end; width: min(100%, 350px); animation: profileIn 900ms 260ms both; }
+    .photo-frame { position: relative; overflow: hidden; aspect-ratio: 0.78; padding: 10px; border: 1px solid rgba(111, 78, 55, 0.2); border-radius: 190px 190px 28px 28px; background: var(--paper); box-shadow: var(--shadow); }
+    .profile-photo { display: block; width: 100%; height: 100%; border-radius: 180px 180px 21px 21px; object-fit: cover; object-position: center 24%; filter: saturate(0.68) sepia(0.10) contrast(1.03); }
+    .profile-note { position: absolute; right: -38px; bottom: 42px; max-width: 170px; padding: 16px 18px; border-radius: 16px; color: var(--white); background: var(--brown); box-shadow: 0 16px 38px rgba(76, 52, 37, 0.25); font-size: 12px; font-weight: 700; line-height: 1.5; transform: rotate(3deg); }
+    .profile-note::before { content: "↳ "; color: #ddc6b5; }
+
+    .scroll-note { position: absolute; right: max(24px, calc((100vw - 1120px) / 2)); bottom: 42px; color: var(--gray-600); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; writing-mode: vertical-rl; }
+
+    .portfolio-section { position: relative; padding: 100px max(24px, calc((100vw - 1120px) / 2)) 120px; background: var(--paper); }
+    .portfolio-section.alt { background: var(--white); }
+
+    .section-heading { display: grid; grid-template-columns: 1fr 0.65fr; gap: 60px; margin-bottom: 54px; align-items: end; }
+    .section-kicker { display: block; margin-bottom: 12px; color: var(--brown); font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+    .section-heading h2 { margin: 0; font-family: "Bodoni Moda", serif; font-size: clamp(42px, 5.3vw, 72px); font-weight: 600; line-height: 1; letter-spacing: -0.045em; }
+    .section-heading p { margin: 0; color: var(--gray-600); line-height: 1.8; }
+
+    .masonry-card.ant-card { overflow: hidden; border: 1px solid rgba(73, 68, 64, 0.10); border-radius: 24px; background: var(--white); box-shadow: 0 12px 36px rgba(67, 61, 56, 0.07); transition: transform 280ms cubic-bezier(.2,.8,.2,1), box-shadow 280ms ease, border-color 280ms ease; }
+    .masonry-card.ant-card:hover { transform: translateY(-7px) rotate(-0.25deg); border-color: rgba(111, 78, 55, 0.26); box-shadow: 0 24px 55px rgba(67, 61, 56, 0.13); }
+    .masonry-card .ant-card-body { padding: 28px; }
+    .card-tall .ant-card-body { padding: 0; }
+
+    .card-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 42px; color: var(--gray-600); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .card-index { color: var(--brown-soft); font-family: "Bodoni Moda", serif; font-size: 14px; }
+
+    .masonry-card h3 { margin: 0 0 14px; font-family: "Bodoni Moda", serif; font-size: 31px; line-height: 1.08; letter-spacing: -0.035em; }
+    .masonry-card p { margin: 0; color: var(--gray-600); line-height: 1.75; }
+
+    .brown-card.ant-card { color: var(--white); background: var(--brown); }
+    .brown-card .card-label, .brown-card p { color: rgba(255, 255, 255, 0.72); }
+    .brown-card h3 { color: var(--white); }
+
+    .quote-mark { display: block; height: 55px; color: var(--brown-soft); font-family: "Bodoni Moda", serif; font-size: 78px; line-height: 1; }
+    .quote-text { font-family: "Bodoni Moda", serif; font-size: 27px; line-height: 1.35 !important; }
+
+    .skill-cloud { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .skill-group + .skill-group { margin-top: 20px; }
+    .skill-group-label { display: block; margin-bottom: 8px; color: var(--brown); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .skill-cloud .ant-tag { margin: 0; padding: 6px 12px; border: 1px solid var(--gray-100); border-radius: 999px; color: var(--gray-900); background: var(--paper); font-weight: 600; }
+    .brown-card .skill-cloud .ant-tag { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.10); color: var(--white); }
+
+    .visual-card { min-height: 380px; background: var(--gray-900) !important; }
+    .browser-mockup { padding: 26px; }
+    .browser-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+    .browser-dot { width: 7px; height: 7px; border-radius: 50%; background: #8d8982; }
+    .mockup-title { width: 72%; margin-bottom: 14px; color: var(--white); font-family: "Bodoni Moda", serif; font-size: 38px; line-height: 1; }
+    .mockup-line { width: 58%; height: 7px; margin: 9px 0; border-radius: 4px; background: #615e59; }
+    .mockup-line.short { width: 38%; }
+    .mockup-grid { display: grid; grid-template-columns: 1fr 0.6fr; gap: 10px; margin-top: 42px; }
+    .mockup-block { min-height: 86px; border-radius: 12px; background: var(--brown); }
+    .mockup-block:nth-child(2) { background: #d7d2ca; }
+    .mockup-block:nth-child(3) { grid-column: span 2; min-height: 48px; background: #4b4945; }
+
+    .process-list { display: grid; gap: 22px; margin-top: 26px; }
+    .process-item { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+    .process-number { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--gray-300); border-radius: 50%; color: var(--brown); font-family: "Bodoni Moda", serif; font-size: 12px; }
+    .process-item strong { display: block; margin-bottom: 4px; font-size: 13px; }
+    .process-item span { color: var(--gray-600); font-size: 12px; line-height: 1.55; }
+
+    .stack-card { position: relative; min-height: 240px; }
+    .stack-symbol { position: absolute; right: 18px; bottom: -30px; color: rgba(111, 78, 55, 0.07); font-family: "Bodoni Moda", serif; font-size: 150px; }
+
+    .availability { display: flex; align-items: center; gap: 11px; margin-top: 28px; font-size: 12px; font-weight: 700; }
+    .availability-dot { width: 10px; height: 10px; border: 3px solid #d7c8bc; border-radius: 50%; background: var(--brown); box-shadow: 0 0 0 5px rgba(111, 78, 55, 0.09); }
+
+    /* Projetos */
+    .project-card.ant-card { cursor: pointer; }
+    .project-cover { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(135deg, var(--paper), var(--gray-100)); }
+    .project-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 420ms ease; }
+    .project-card.ant-card:hover .project-cover img { transform: scale(1.05); }
+    .project-cover-fallback { position: absolute; inset: 0; display: grid; place-items: center; font-family: "Bodoni Moda", serif; font-size: 15px; color: var(--brown-soft); text-align: center; padding: 12px; }
+    .project-body { padding: 22px 24px 24px; }
+    .project-body h3 { margin: 0 0 8px; font-family: "Bodoni Moda", serif; font-size: 24px; letter-spacing: -0.03em; }
+    .project-body p { margin: 0 0 14px; color: var(--gray-600); font-size: 13.5px; line-height: 1.6; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-tags .ant-tag { margin: 0; padding: 3px 10px; border: 1px solid var(--gray-100); border-radius: 999px; background: var(--paper); font-size: 11px; font-weight: 600; }
+    .project-open-hint { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--brown); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    /* Modal galeria */
+    .gallery-modal .ant-modal-content { padding: 0; border-radius: 24px; overflow: hidden; }
+    .gallery-header { padding: 30px 32px 22px; border-bottom: 1px solid var(--gray-100); background: var(--paper); }
+    .gallery-header h3 { margin: 0 0 8px; font-family: "Bodoni Moda", serif; font-size: 30px; letter-spacing: -0.03em; }
+    .gallery-header p { margin: 0 0 12px; color: var(--gray-600); line-height: 1.65; }
+    .gallery-body { padding: 24px 32px 32px; max-height: 62vh; overflow-y: auto; }
+    .gallery-photo { border-radius: 16px; overflow: hidden; background: var(--gray-100); }
+    .gallery-photo img { width: 100%; display: block; }
+    .gallery-photo-fallback { aspect-ratio: 4 / 3; display: grid; place-items: center; color: var(--gray-600); font-size: 12px; }
+    .gallery-empty { color: var(--gray-600); font-size: 13px; text-align: center; padding: 30px 0; }
+
+    /* Frases */
+    .quote-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .quote-card.ant-card { padding: 4px; }
+    .quote-card .ant-card-body { padding: 32px; }
+    .quote-card .quote-mark { color: var(--brown-soft); }
+    .quote-card .quote-text { font-size: 22px; }
+    .quote-card .quote-author { display: block; margin-top: 18px; color: var(--brown); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .contact-section { display: grid; min-height: 560px; padding: 100px max(24px, calc((100vw - 1120px) / 2)); align-items: center; color: var(--white); background: var(--gray-900); }
+    .contact-inner { display: grid; grid-template-columns: 1fr auto; gap: 50px; align-items: end; }
+    .contact-section .section-kicker { color: var(--brown-soft); }
+    .contact-section h2 { max-width: 820px; margin: 0; font-family: "Bodoni Moda", serif; font-size: clamp(54px, 8vw, 108px); font-weight: 600; line-height: 0.92; letter-spacing: -0.055em; }
+    .contact-section h2 em { color: var(--brown-soft); font-weight: 600; }
+    .contact-cta { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+
+    .contact-button.ant-btn { width: 128px; height: 128px; border: 0; border-radius: 50%; color: var(--gray-900); background: var(--white); box-shadow: none; font-weight: 700; transform: rotate(-8deg); transition: transform 250ms ease, background 250ms ease; }
+    .contact-button.ant-btn:hover { color: var(--white) !important; background: var(--brown) !important; transform: rotate(0deg) scale(1.05); }
+
+    .contact-links { display: flex; gap: 10px; }
+    .contact-links a { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; color: var(--white); font-size: 17px; transition: background 200ms ease, border-color 200ms ease; }
+    .contact-links a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+
+    .footer { display: flex; justify-content: space-between; gap: 24px; padding: 25px max(24px, calc((100vw - 1120px) / 2)); border-top: 1px solid #44413d; color: #aaa59f; background: var(--gray-900); font-size: 11px; letter-spacing: 0.04em; }
+
+    @keyframes reveal { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes profileIn { from { opacity: 0; transform: translateY(26px) rotate(3deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
+
+    @media (max-width: 900px) {
+      .hero { min-height: auto; padding-top: 130px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .hero h1 { font-size: clamp(62px, 15vw, 104px); }
+      .profile-composition { justify-self: center; width: min(78vw, 360px); }
+      .profile-note { right: -20px; }
+      .scroll-note, .hero::after { display: none; }
+      .section-heading, .contact-inner { grid-template-columns: 1fr; }
+      .contact-button.ant-btn { width: 110px; height: 110px; }
+      .quote-strip { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .nav { min-height: 58px; padding-left: 14px; }
+      .brand-text { display: none; }
+      .nav-link { padding: 9px 10px; font-size: 12px; }
+      .hero { padding-top: 120px; padding-bottom: 70px; }
+      .hero h1 { font-size: clamp(54px, 17vw, 82px); }
+      .hero-copy { margin-top: 26px; font-size: 15px; }
+      .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .hero-actions .ant-btn { width: 100%; padding-inline: 12px; }
+      .profile-note { right: -8px; bottom: 24px; max-width: 145px; }
+      .portfolio-section { padding-top: 76px; padding-bottom: 80px; }
+      .section-heading { gap: 24px; margin-bottom: 36px; }
+      .masonry-card .ant-card-body { padding: 24px; }
+      .contact-section { min-height: 500px; padding-top: 80px; padding-bottom: 80px; }
+      .contact-section h2 { font-size: clamp(49px, 16vw, 74px); }
+      .contact-inner { justify-items: start; }
+      .footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/dayjs@1.11.13/dayjs.min.js"></script>
+  <script src="https://unpkg.com/@ant-design/icons@6.3.1/dist/index.umd.min.js"></script>
+  <script src="https://unpkg.com/antd@6.5.2/dist/antd.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.28.4/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { Button, Card, ConfigProvider, Masonry, Tag, Modal } = antd;
+    const {
+      ArrowDownOutlined, ArrowRightOutlined, CodeOutlined,
+      GithubOutlined, LinkedinOutlined, MailOutlined, InstagramOutlined,
+      ExpandOutlined,
+    } = icons;
+
+    // ------------------------------------------------------------------
+    // TALENTO / STACK — edite os grupos e tags abaixo à vontade.
+    // ------------------------------------------------------------------
+    const skillGroups = [
+      { label: "Front-end", items: ["React", "TypeScript", "JavaScript", "CSS responsivo", "Ant Design"] },
+      { label: "Back-end", items: ["Node.js", "NestJS", "PostgreSQL", "APIs REST"] },
+      { label: "Qualidade", items: ["Jest", "Vitest", "Testes front + back"] },
+      { label: "Fluxo de trabalho", items: ["IA como ferramenta principal", "Prototipação rápida", "Documentação viva"] },
+    ];
+
+    // ------------------------------------------------------------------
+    // PROJETOS — troque "cover" e cada item de "photos" pelo caminho
+    // real da sua imagem (ex: "assets/projetos/loja/capa.jpg").
+    // Enquanto o arquivo não existir, aparece um bloco de reserva no
+    // lugar da foto — então pode ir adicionando aos poucos sem quebrar
+    // o layout.
+    // ------------------------------------------------------------------
+    const projects = [
+      {
+        slug: "projeto-um",
+        title: "Nome do projeto 1",
+        summary: "Uma frase curta contando o que esse projeto resolve e por que ele existe.",
+        tags: ["React", "NestJS", "PostgreSQL"],
+        cover: "assets/projetos/projeto-um/capa.jpg",
+        description: "Espaço para contar a história do projeto: o problema, as decisões técnicas mais interessantes e o que você aprendeu construindo.",
+        photos: [
+          "assets/projetos/projeto-um/1.jpg",
+          "assets/projetos/projeto-um/2.jpg",
+          "assets/projetos/projeto-um/3.jpg",
+        ],
+      },
+      {
+        slug: "projeto-dois",
+        title: "Nome do projeto 2",
+        summary: "Outra frase curta e direta sobre esse segundo projeto.",
+        tags: ["TypeScript", "Vitest", "IA aplicada"],
+        cover: "assets/projetos/projeto-dois/capa.jpg",
+        description: "Descreva o contexto, o papel que a IA teve na construção e algum detalhe técnico que valha a pena destacar.",
+        photos: [
+          "assets/projetos/projeto-dois/1.jpg",
+          "assets/projetos/projeto-dois/2.jpg",
+        ],
+      },
+      {
+        slug: "projeto-tres",
+        title: "Nome do projeto 3",
+        summary: "Espaço reservado para o próximo projeto que você publicar.",
+        tags: ["Node.js", "Jest"],
+        cover: "assets/projetos/projeto-tres/capa.jpg",
+        description: "Assim que tiver as fotos e o texto prontos, é só substituir aqui.",
+        photos: [
+          "assets/projetos/projeto-tres/1.jpg",
+        ],
+      },
+    ];
+
+    // ------------------------------------------------------------------
+    // FRASES — pode adicionar quantas quiser.
+    // ------------------------------------------------------------------
+    const quotes = [
+      { text: "O esforço sempre vence o talento.", author: "Princípio de trabalho" },
+      { text: "Buscando sempre o conhecimento e aprimoramento, se adaptando ao estilo de trabalho.", author: "Como eu encaro cada projeto" },
+    ];
+
+    function ImageWithFallback({ src, alt, className, fallbackClassName, fallbackText }) {
+      const [broken, setBroken] = React.useState(false);
+      if (broken) {
+        return (
+          <div className={fallbackClassName}>
+            <span>{fallbackText}</span>
+          </div>
+        );
+      }
+      return (
+        <img
+          className={className}
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onError={() => setBroken(true)}
+        />
+      );
+    }
+
+    const Process = () => (
+      <div className="process-list">
+        {[
+          ["01", "Entender", "Objetivo, público e contexto antes da primeira tela."],
+          ["02", "Compor", "Hierarquia visual, ritmo e componentes reutilizáveis."],
+          ["03", "Refinar", "Responsividade, acessibilidade e microinterações."],
+        ].map(([number, title, text]) => (
+          <div className="process-item" key={number}>
+            <span className="process-number">{number}</span>
+            <div><strong>{title}</strong><span>{text}</span></div>
+          </div>
+        ))}
+      </div>
+    );
+
+    const masonryItems = [
+      {
+        key: "manifesto",
+        children: (
+          <Card className="masonry-card brown-card">
+            <div className="card-label"><span>Manifesto</span><span className="card-index">01</span></div>
+            <span className="quote-mark">“</span>
+            <p className="quote-text">Código bem construído também pode ter textura, ritmo e personalidade.</p>
+          </Card>
+        ),
+      },
+      {
+        key: "interface",
+        children: (
+          <Card className="masonry-card card-tall visual-card">
+            <div className="browser-mockup">
+              <div className="browser-bar"><span className="browser-dot"></span><span className="browser-dot"></span><span className="browser-dot"></span></div>
+              <div className="mockup-title">Interfaces que respiram.</div>
+              <div className="mockup-line"></div><div className="mockup-line short"></div>
+              <div className="mockup-grid"><div className="mockup-block"></div><div className="mockup-block"></div><div className="mockup-block"></div></div>
+            </div>
+          </Card>
+        ),
+      },
+      {
+        key: "stack",
+        children: (
+          <Card className="masonry-card stack-card">
+            <div className="card-label"><span>Talento & stack</span><span className="card-index">02</span></div>
+            <h3>Do banco de dados ao pixel.</h3>
+            <p>Full-stack por completo: front, back, testes e IA como parte natural do processo — não só uma ferramenta a mais.</p>
+            {skillGroups.map((group) => (
+              <div className="skill-group" key={group.label}>
+                <span className="skill-group-label">{group.label}</span>
+                <div className="skill-cloud">
+                  {group.items.map((item) => <Tag key={item}>{item}</Tag>)}
+                </div>
+              </div>
+            ))}
+            <span className="stack-symbol">&lt;/&gt;</span>
+          </Card>
+        ),
+      },
+      {
+        key: "process",
+        children: (
+          <Card className="masonry-card">
+            <div className="card-label"><span>Meu processo</span><span className="card-index">03</span></div>
+            <h3>Clareza antes de complexidade.</h3>
+            <Process />
+          </Card>
+        ),
+      },
+      {
+        key: "antd",
+        children: (
+          <Card className="masonry-card">
+            <div className="card-label"><span>Componentes</span><span className="card-index">04</span></div>
+            <h3>Ant Design 6.5</h3>
+            <p>Este próprio portfólio usa o novo Masonry do Ant Design para criar uma narrativa modular, responsiva e menos previsível.</p>
+          </Card>
+        ),
+      },
+      {
+        key: "availability",
+        children: (
+          <Card className="masonry-card">
+            <div className="card-label"><span>Colaboração</span><span className="card-index">05</span></div>
+            <h3>Ideias digitais, tratadas com cuidado.</h3>
+            <p>Aberto a conversar sobre produtos, interfaces e experiências web que precisam sair do óbvio.</p>
+            <div className="availability"><span className="availability-dot"></span>Disponível para novos projetos</div>
+          </Card>
+        ),
+      },
+    ];
+
+    function ProjectCard({ project, onOpen }) {
+      return (
+        <Card className="masonry-card project-card" onClick={() => onOpen(project)}>
+          <div className="project-cover">
+            <ImageWithFallback
+              src={project.cover}
+              alt={`Capa do projeto ${project.title}`}
+              className=""
+              fallbackClassName="project-cover-fallback"
+              fallbackText="Foto de capa — adicione em cover"
+            />
+          </div>
+          <div className="project-body">
+            <h3>{project.title}</h3>
+            <p>{project.summary}</p>
+            <div className="project-tags">
+              {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+            </div>
+            <span className="project-open-hint"><ExpandOutlined /> Ver galeria</span>
+          </div>
+        </Card>
+      );
+    }
+
+    function ProjectGalleryModal({ project, onClose }) {
+      const open = !!project;
+      const items = open
+        ? project.photos.map((src, index) => ({
+            key: `${project.slug}-${index}`,
+            children: (
+              <div className="gallery-photo">
+                <ImageWithFallback
+                  src={src}
+                  alt={`Foto ${index + 1} do projeto ${project.title}`}
+                  className=""
+                  fallbackClassName="gallery-photo-fallback"
+                  fallbackText={`Foto ${index + 1} — em breve`}
+                />
+              </div>
+            ),
+          }))
+        : [];
+
+      return (
+        <Modal
+          open={open}
+          onCancel={onClose}
+          footer={null}
+          width={860}
+          className="gallery-modal"
+          destroyOnHidden
+        >
+          {open && (
+            <React.Fragment>
+              <div className="gallery-header">
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div className="project-tags">
+                  {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                </div>
+              </div>
+              <div className="gallery-body">
+                {items.length > 0
+                  ? <Masonry items={items} columns={{ xs: 1, sm: 2, lg: 2 }} gutter={16} />
+                  : <p className="gallery-empty">Ainda sem fotos aqui — adicione os caminhos em "photos".</p>}
+              </div>
+            </React.Fragment>
+          )}
+        </Modal>
+      );
+    }
+
+    const App = () => {
+      const [activeProject, setActiveProject] = React.useState(null);
+
+      return (
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#6f4e37",
+              colorText: "#292825",
+              colorBgContainer: "#fbfaf8",
+              borderRadius: 14,
+              fontFamily: '"Manrope", sans-serif',
+            },
+            components: {
+              Button: { primaryShadow: "none", controlHeightLG: 50 },
+              Card: { paddingLG: 28 },
+            },
+          }}
+        >
+          <main className="site-shell">
+            <div className="nav-wrap">
+              <nav className="nav" aria-label="Navegação principal">
+                <a className="brand" href="#inicio" aria-label="Ir para o início">
+                  <span className="brand-mark">GG</span><span className="brand-text">Guilherme Ghirro</span>
+                </a>
+                <div className="nav-links">
+                  <a className="nav-link" href="#sobre">Sobre</a>
+                  <a className="nav-link" href="#trabalho">Trabalho</a>
+                  <a className="nav-link" href="#projetos">Projetos</a>
+                  <a className="nav-link" href="#contato">Contato</a>
+                </div>
+              </nav>
+            </div>
+
+            <section className="hero" id="inicio">
+              <div className="hero-grid">
+                <div>
+                  <span className="eyebrow">Desenvolvedor full-stack</span>
+                  <h1>Guilherme <span>Ghirro.</span></h1>
+                  <p className="hero-copy">Transformo ideias em experiências web expressivas — com código organizado e interfaces que têm presença.</p>
+                  <div className="hero-actions">
+                    <Button type="primary" size="large" href="#projetos" icon={<CodeOutlined />}>Ver projetos</Button>
+                    <Button size="large" href="#contato" icon={<ArrowDownOutlined />}>Vamos conversar</Button>
+                  </div>
+                </div>
+
+                <div className="profile-composition" id="sobre">
+                  <div className="photo-frame">
+                    <img className="profile-photo" src="assets/ghirro.webp" alt="Retrato de Guilherme Ghirro" />
+                  </div>
+                  <div className="profile-note">React, HTML e componentes Ant Design com identidade própria.</div>
+                </div>
+              </div>
+              <span className="scroll-note">Role para descobrir</span>
+            </section>
+
+            <section className="portfolio-section" id="trabalho">
+              <div className="section-heading">
+                <div><span className="section-kicker">Forma + função</span><h2>Como eu penso e construo.</h2></div>
+                <p>Uma coleção viva de princípios, ferramentas e decisões que orientam meu trabalho full-stack.</p>
+              </div>
+              <Masonry items={masonryItems} columns={{ xs: 1, sm: 2, lg: 3 }} gutter={20} />
+            </section>
+
+            <section className="portfolio-section alt" id="projetos">
+              <div className="section-heading">
+                <div><span className="section-kicker">Coisas que eu construí</span><h2>Projetos.</h2></div>
+                <p>Clique em qualquer projeto para abrir a galeria de fotos. Esta seção cresce conforme eu vou publicando novos trabalhos.</p>
+              </div>
+              <Masonry
+                items={projects.map((project) => ({
+                  key: project.slug,
+                  children: <ProjectCard project={project} onOpen={setActiveProject} />,
+                }))}
+                columns={{ xs: 1, sm: 2, lg: 3 }}
+                gutter={20}
+              />
+              <ProjectGalleryModal project={activeProject} onClose={() => setActiveProject(null)} />
+            </section>
+
+            <section className="portfolio-section" id="frases">
+              <div className="section-heading">
+                <div><span className="section-kicker">Do jeito que eu penso</span><h2>Algumas frases.</h2></div>
+                <p>Coisas que repito para mim mesmo no dia a dia de trabalho.</p>
+              </div>
+              <div className="quote-strip">
+                {quotes.map((quote) => (
+                  <Card className="masonry-card quote-card" key={quote.text}>
+                    <span className="quote-mark">“</span>
+                    <p className="quote-text">{quote.text}</p>
+                    <span className="quote-author">{quote.author}</span>
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            <section className="contact-section" id="contato">
+              <div className="contact-inner">
+                <div><span className="section-kicker">Próximo projeto</span><h2>Vamos criar algo com <em>personalidade?</em></h2></div>
+                <div className="contact-cta">
+                  <Button className="contact-button" href="#inicio" icon={<ArrowRightOutlined />}>Voltar ao topo</Button>
+                  <div className="contact-links">
+                    <a href="mailto:seuemail@exemplo.com" aria-label="E-mail"><MailOutlined /></a>
+                    <a href="https://github.com/seu-usuario" target="_blank" rel="noreferrer" aria-label="GitHub"><GithubOutlined /></a>
+                    <a href="https://linkedin.com/in/seu-usuario" target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedinOutlined /></a>
+                    <a href="https://instagram.com/seu-usuario" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramOutlined /></a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <footer className="footer">
+              <span>© {new Date().getFullYear()} Guilherme Ghirro</span>
+              <span>React · HTML · Ant Design 6.5 · feito com intenção</span>
+            </footer>
+          </main>
+        </ConfigProvider>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
