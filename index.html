@@ -178,11 +178,30 @@
     .gallery-header { padding: 30px 32px 22px; border-bottom: 1px solid var(--gray-100); background: var(--paper); }
     .gallery-header h3 { margin: 0 0 8px; font-family: "Bodoni Moda", serif; font-size: 30px; letter-spacing: -0.03em; }
     .gallery-header p { margin: 0 0 12px; color: var(--gray-600); line-height: 1.65; }
-    .gallery-body { padding: 24px 32px 32px; max-height: 62vh; overflow-y: auto; }
+    .gallery-body { padding: 24px 32px 32px; max-height: 72vh; overflow-y: auto; }
     .gallery-photo { border-radius: 16px; overflow: hidden; background: var(--gray-100); }
-    .gallery-photo img { width: 100%; display: block; }
-    .gallery-photo-fallback { aspect-ratio: 4 / 3; display: grid; place-items: center; color: var(--gray-600); font-size: 12px; }
+    .gallery-photo img { width: 100%; display: block; transition: transform 320ms ease; }
+    .gallery-photo-fallback { aspect-ratio: 4 / 3; display: grid; place-items: center; color: var(--gray-600); font-size: 12px; text-align: center; padding: 12px; }
     .gallery-empty { color: var(--gray-600); font-size: 13px; text-align: center; padding: 30px 0; }
+
+    .gallery-thumb { display: block; width: 100%; padding: 0; border: 0; background: none; font-family: inherit; color: inherit; text-align: left; cursor: pointer; }
+    .gallery-thumb:hover .gallery-photo img { transform: scale(1.05); }
+    .gallery-thumb-caption { display: block; margin-top: 10px; color: var(--gray-900); font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; }
+
+    .gallery-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 0; border: 0; background: none; color: var(--brown); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+    .gallery-back:hover { color: var(--brown-dark); }
+
+    .gallery-detail { display: grid; grid-template-columns: 1.25fr 1fr; gap: 30px; align-items: start; }
+    .gallery-detail-photo { position: relative; overflow: hidden; border-radius: 16px; background: var(--gray-100); }
+    .gallery-detail-photo img { width: 100%; display: block; }
+    .gallery-detail-nav { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 14px; background: var(--paper); color: var(--gray-600); font-size: 12px; font-weight: 700; }
+    .gallery-detail-text p { margin: 0; color: var(--gray-600); font-size: 14px; line-height: 1.75; }
+    .gallery-detail-text ul { margin: 18px 0 0; padding-left: 18px; color: var(--gray-600); font-size: 13px; line-height: 1.7; }
+    .gallery-detail-text li + li { margin-top: 4px; }
+
+    @media (max-width: 640px) {
+      .gallery-detail { grid-template-columns: 1fr; }
+    }
 
     /* Frases */
     .quote-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -261,7 +280,7 @@
   <script type="text/babel">
     const { Button, Card, ConfigProvider, Masonry, Tag, Modal } = antd;
     const {
-      ArrowDownOutlined, ArrowRightOutlined, CodeOutlined,
+      ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, CodeOutlined,
       GithubOutlined, LinkedinOutlined, MailOutlined, InstagramOutlined,
       ExpandOutlined,
     } = icons;
@@ -286,15 +305,108 @@
     const projects = [
       {
         slug: "projeto-um",
-        title: "Nome do projeto 1",
-        summary: "Uma frase curta contando o que esse projeto resolve e por que ele existe.",
-        tags: ["React", "NestJS", "PostgreSQL"],
-        cover: "assets/projetos/projeto-um/capa.jpg",
-        description: "Espaço para contar a história do projeto: o problema, as decisões técnicas mais interessantes e o que você aprendeu construindo.",
+        title: "TaskFlow — Gerenciador de Tarefas",
+        summary: "Sistema multi-empresa de tarefas, projetos e equipes, com controle de acesso por perfil, papel e grupo.",
+        tags: ["React", "NestJS", "PostgreSQL", "Multi-tenant"],
+        cover: "assets/projetos/projeto-um/home.png",
+        description: "TaskFlow é um gerenciador de tarefas multi-tenant: cada empresa enxerga só os próprios dados, com login por empresa + e-mail + senha, perfis de acesso (USER/ADMIN), papéis (roles) configuráveis por tela e grupos com líderes e membros. Clique em qualquer imagem abaixo para ver a tela em detalhe.",
         photos: [
-          "assets/projetos/projeto-um/1.jpg",
-          "assets/projetos/projeto-um/2.jpg",
-          "assets/projetos/projeto-um/3.jpg",
+          {
+            src: "assets/projetos/projeto-um/home.png",
+            title: "Home (painel inicial)",
+            description: "Tela inicial da aplicação, com saudação personalizada e um campo rápido “O que você vai fazer hoje?” que cria automaticamente uma tarefa de 1 hora para o dia. Quatro cartões de estatística — Total de tarefas, Em andamento, Atrasadas e Finalizadas — são calculados a partir das tarefas do usuário logado.",
+            highlights: ["Criação rápida de tarefa em um clique", "Estatísticas calculadas em tempo real", "Aba fixa — nunca pode ser fechada"],
+          },
+          {
+            src: "assets/projetos/projeto-um/tarefas.png",
+            title: "Tarefas",
+            description: "Listagem de tarefas em cartões, mostrando número, nome, descrição, projeto vinculado, horas previstas e o intervalo de datas. Cada status (Aguardando, Em andamento, Pausado, Finalizado, Cancelado) tem uma cor própria, e tarefas com prazo vencido e não finalizadas ganham a etiqueta extra “Atrasada”.",
+            highlights: ["Ações por cartão: iniciar, pausar, editar, cancelar, escalonar e excluir", "Transições de status validadas no backend", "Dados isolados por empresa"],
+          },
+          {
+            src: "assets/projetos/projeto-um/nova_tarefa.png",
+            title: "Nova Tarefa",
+            description: "Modal de criação de tarefa com nome, descrição, horas previstas, data de início e fim, status inicial e projeto opcional. As transições seguintes (iniciar, pausar, cancelar, escalonar) acontecem só pelas ações do cartão, nunca por edição direta do status.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/cadastro_usuarios.png",
+            title: "Usuários",
+            description: "Tabela de usuários da empresa com foto, ID, nome, e-mail e perfil de acesso — etiqueta dourada para ADMIN e azul para USER. Cada empresa só vê e gerencia os próprios usuários, respeitando o limite máximo configurado (max_users).",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/adicionar_usuario.png",
+            title: "Adicionar Usuário",
+            description: "Modal de cadastro com nome, e-mail, senha, perfil de acesso (USER/ADMIN) e foto opcional. Se nenhuma senha for informada, o sistema usa a senha padrão da empresa ou “123456” como reserva.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/cadastrar_projetos.png",
+            title: "Projetos — Cadastro",
+            description: "Formulário completo de criação de projeto: título, descrição, horas previstas, cliente, referência CRM, complexidade, prioridade, status, responsáveis (seleção múltipla de usuários) e listas dinâmicas de riscos e ganhos.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/listagem_projetos.png",
+            title: "Projetos — Listagem",
+            description: "Tabela de projetos com título, cliente, complexidade, prioridade, status, horas previstas e responsáveis. Complexidade e prioridade usam cores para indicar nível de atenção; cada linha pode ser editada (reabre o formulário do cadastro, pré-preenchido) ou excluída.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/perfis_de_acesso.png",
+            title: "Perfis de Acesso (Roles)",
+            description: "Gestão de papéis (roles) por empresa, visível para ADMIN, GESTOR ou usuários com acesso liberado. Cada role define quais telas configuráveis ele pode ver; o role de sistema GESTOR vem com acesso total e não pode ser renomeado nem excluído.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/setores.png",
+            title: "Grupos",
+            description: "Gestão de grupos da empresa, com nome, quantidade de líderes e de membros. Líderes de grupo enxergam, no Painel da Equipe e em Apontamentos, apenas os membros dos grupos que lideram — o mecanismo usado para dar visibilidade de equipe sem acesso total à empresa.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/lideres_setor.png",
+            title: "Grupos — Gerenciar Líderes",
+            description: "Modal com todos os usuários da empresa e um interruptor para incluir ou remover cada um como líder do grupo. Salvar substitui a lista completa de líderes.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/memros_setor.png",
+            title: "Grupos — Gerenciar Membros",
+            description: "Mesmo princípio da tela de líderes, aplicado aos membros: um interruptor por usuário da empresa, com a lista completa sendo substituída ao salvar.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/cadastro_empresas.png",
+            title: "Empresas",
+            description: "Visível apenas para usuários logados na empresa Master. Lista código, nome, se é a empresa Master, limite máximo de usuários (ou “sem limite”) e ações — “gerenciar acesso” aparece só para empresas que não são a Master.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/nova_empresa.png",
+            title: "Nova/Editar Empresa",
+            description: "Modal com código único usado no login, nome, máximo de usuários opcional e senha padrão opcional — usada para novos usuários dessa empresa quando nenhuma senha é informada no cadastro.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/acesso_a_empresa.png",
+            title: "Empresas — Gerenciar Acesso",
+            description: "Lista todos os usuários do sistema com um interruptor para conceder ou revogar acesso individual à empresa selecionada — é o que permite a um usuário da empresa Master entrar em outra empresa digitando o código dela no login.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/configuracoes.png",
+            title: "Configurações",
+            description: "Acessada só pelo Menu do Usuário, reúne o interruptor de tema claro/escuro e o seletor de idioma (pt-BR/en-US). Não faz nenhuma chamada à API — trabalha só com o contexto de tema salvo no navegador.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-um/configuracao_em_ingles.png",
+            title: "Tema e idioma em inglês",
+            description: "A mesma tela de configurações com o idioma trocado para en-US, mostrando a tradução completa da interface. Tema e idioma ficam sincronizados entre o Menu do Usuário e a tela de Configurações, e a escolha é salva no localStorage para persistir entre sessões.",
+            highlights: [],
+          },
         ],
       },
       {
@@ -305,8 +417,8 @@
         cover: "assets/projetos/projeto-dois/capa.jpg",
         description: "Descreva o contexto, o papel que a IA teve na construção e algum detalhe técnico que valha a pena destacar.",
         photos: [
-          "assets/projetos/projeto-dois/1.jpg",
-          "assets/projetos/projeto-dois/2.jpg",
+          { src: "assets/projetos/projeto-dois/1.jpg", title: "Tela 1", description: "Descreva aqui o que essa tela faz." },
+          { src: "assets/projetos/projeto-dois/2.jpg", title: "Tela 2", description: "Descreva aqui o que essa tela faz." },
         ],
       },
       {
@@ -317,7 +429,7 @@
         cover: "assets/projetos/projeto-tres/capa.jpg",
         description: "Assim que tiver as fotos e o texto prontos, é só substituir aqui.",
         photos: [
-          "assets/projetos/projeto-tres/1.jpg",
+          { src: "assets/projetos/projeto-tres/1.jpg", title: "Tela 1", description: "Descreva aqui o que essa tela faz." },
         ],
       },
     ];
@@ -467,45 +579,96 @@
 
     function ProjectGalleryModal({ project, onClose }) {
       const open = !!project;
-      const items = open
-        ? project.photos.map((src, index) => ({
-            key: `${project.slug}-${index}`,
-            children: (
-              <div className="gallery-photo">
-                <ImageWithFallback
-                  src={src}
-                  alt={`Foto ${index + 1} do projeto ${project.title}`}
-                  className=""
-                  fallbackClassName="gallery-photo-fallback"
-                  fallbackText={`Foto ${index + 1} — em breve`}
-                />
-              </div>
-            ),
-          }))
-        : [];
+      const [selectedIndex, setSelectedIndex] = React.useState(null);
+
+      React.useEffect(() => {
+        setSelectedIndex(null);
+      }, [project]);
+
+      const photos = open ? project.photos : [];
+      const selected = selectedIndex !== null ? photos[selectedIndex] : null;
+
+      const goToPrev = () => setSelectedIndex((index) => (index - 1 + photos.length) % photos.length);
+      const goToNext = () => setSelectedIndex((index) => (index + 1) % photos.length);
+
+      const items = photos.map((photo, index) => ({
+        key: `${project.slug}-${index}`,
+        children: (
+          <button type="button" className="gallery-thumb" onClick={() => setSelectedIndex(index)}>
+            <div className="gallery-photo">
+              <ImageWithFallback
+                src={photo.src}
+                alt={`Foto da tela "${photo.title}" do projeto ${project.title}`}
+                className=""
+                fallbackClassName="gallery-photo-fallback"
+                fallbackText={`${photo.title} — em breve`}
+              />
+            </div>
+            <span className="gallery-thumb-caption">{photo.title}</span>
+          </button>
+        ),
+      }));
 
       return (
         <Modal
           open={open}
           onCancel={onClose}
           footer={null}
-          width={860}
+          width={selected ? 980 : 860}
           className="gallery-modal"
           destroyOnHidden
         >
           {open && (
             <React.Fragment>
               <div className="gallery-header">
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <div className="project-tags">
-                  {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-                </div>
+                {selected && (
+                  <button type="button" className="gallery-back" onClick={() => setSelectedIndex(null)}>
+                    <ArrowLeftOutlined /> Voltar para a galeria
+                  </button>
+                )}
+                <h3>{selected ? selected.title : project.title}</h3>
+                {!selected && (
+                  <React.Fragment>
+                    <p>{project.description}</p>
+                    <div className="project-tags">
+                      {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
               <div className="gallery-body">
-                {items.length > 0
-                  ? <Masonry items={items} columns={{ xs: 1, sm: 2, lg: 2 }} gutter={16} />
-                  : <p className="gallery-empty">Ainda sem fotos aqui — adicione os caminhos em "photos".</p>}
+                {selected ? (
+                  <div className="gallery-detail">
+                    <div className="gallery-detail-photo">
+                      <ImageWithFallback
+                        src={selected.src}
+                        alt={`Foto da tela "${selected.title}" do projeto ${project.title}`}
+                        className=""
+                        fallbackClassName="gallery-photo-fallback"
+                        fallbackText={`${selected.title} — em breve`}
+                      />
+                      {photos.length > 1 && (
+                        <div className="gallery-detail-nav">
+                          <Button shape="circle" icon={<ArrowLeftOutlined />} onClick={goToPrev} aria-label="Tela anterior" />
+                          <span>{selectedIndex + 1} / {photos.length}</span>
+                          <Button shape="circle" icon={<ArrowRightOutlined />} onClick={goToNext} aria-label="Próxima tela" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="gallery-detail-text">
+                      <p>{selected.description}</p>
+                      {selected.highlights && selected.highlights.length > 0 && (
+                        <ul>
+                          {selected.highlights.map((item) => <li key={item}>{item}</li>)}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                ) : items.length > 0 ? (
+                  <Masonry items={items} columns={{ xs: 1, sm: 2, lg: 2 }} gutter={16} />
+                ) : (
+                  <p className="gallery-empty">Ainda sem fotos aqui — adicione os caminhos em "photos".</p>
+                )}
               </div>
             </React.Fragment>
           )}
