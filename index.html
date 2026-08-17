@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfólio de Guilherme Ghirro, desenvolvedor full-stack. React, Node, NestJS, TypeScript, testes e IA aplicada no dia a dia.">
+  <meta name="description" content="Portfólio de Guilherme Ghirro, desenvolvedor full-stack. React, Node.js, TypeScript, Docker e testes de ponta a ponta.">
   <meta name="theme-color" content="#6f4e37">
   <title>Guilherme Ghirro — Portfólio Full-stack</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -165,6 +165,9 @@
     .project-cover { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(135deg, var(--paper), var(--gray-100)); }
     .project-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 420ms ease; }
     .project-card.ant-card:hover .project-cover img { transform: scale(1.05); }
+    .project-card.is-disabled.ant-card { cursor: default; }
+    .project-card.is-disabled.ant-card:hover .project-cover img { transform: none; }
+    .project-card.is-disabled .project-cover img { filter: grayscale(45%); opacity: 0.75; }
     .project-cover-fallback { position: absolute; inset: 0; display: grid; place-items: center; font-family: "Bodoni Moda", serif; font-size: 15px; color: var(--brown-soft); text-align: center; padding: 12px; }
     .project-body { padding: 22px 24px 24px; }
     .project-body h3 { margin: 0 0 8px; font-family: "Bodoni Moda", serif; font-size: 24px; letter-spacing: -0.03em; }
@@ -172,6 +175,7 @@
     .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .project-tags .ant-tag { margin: 0; padding: 3px 10px; border: 1px solid var(--gray-100); border-radius: 999px; background: var(--paper); font-size: 11px; font-weight: 600; }
     .project-open-hint { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--brown); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .project-open-hint.is-disabled { color: var(--gray-600); }
 
     /* Modal galeria */
     .gallery-modal .ant-modal-content { padding: 0; border-radius: 24px; overflow: hidden; }
@@ -289,10 +293,10 @@
     // TALENTO / STACK — edite os grupos e tags abaixo à vontade.
     // ------------------------------------------------------------------
     const skillGroups = [
-      { label: "Front-end", items: ["React", "TypeScript", "JavaScript", "CSS responsivo", "Ant Design"] },
-      { label: "Back-end", items: ["Node.js", "NestJS", "PostgreSQL", "APIs REST"] },
+      { label: "Front-end", items: ["React", "TypeScript", "CSS"] },
+      { label: "Back-end", items: ["Node.js", "NestJS", "TypeScript", "JavaScript", "Python", "PHP"] },
+      { label: "Infraestrutura", items: ["Docker", "PostgreSQL", "APIs REST"] },
       { label: "Qualidade", items: ["Jest", "Vitest", "Testes front + back"] },
-      { label: "Fluxo de trabalho", items: ["IA como ferramenta principal", "Prototipação rápida", "Documentação viva"] },
     ];
 
     // ------------------------------------------------------------------
@@ -411,14 +415,78 @@
       },
       {
         slug: "projeto-dois",
-        title: "Nome do projeto 2",
-        summary: "Outra frase curta e direta sobre esse segundo projeto.",
-        tags: ["TypeScript", "Vitest", "IA aplicada"],
-        cover: "assets/projetos/projeto-dois/capa.jpg",
-        description: "Descreva o contexto, o papel que a IA teve na construção e algum detalhe técnico que valha a pena destacar.",
+        title: "Marketplace — App de Compra e Venda",
+        summary: "App mobile de marketplace com contas de cliente e de empresa: empresas anunciam produtos e clientes compram e avaliam. Em desenvolvimento.",
+        tags: ["React Native", "Node.js · Prisma", "PostgreSQL", "Em desenvolvimento"],
+        cover: "assets/projetos/projeto-dois/home.jpg",
+        description: "Marketplace mobile feito em React Native (Expo), com API própria em Node.js, Express e Prisma sobre PostgreSQL, e autenticação por e-mail/senha com token JWT. No cadastro, a conta escolhe entre Cliente ou Empresa — um papel fixo, definido na criação, que decide quais telas e ações ficam disponíveis dali em diante. Empresas cadastram produtos com fotos, vídeos, descrição, preço, estoque e categoria; clientes navegam pela vitrine, pesquisam em tempo real, compram pelo carrinho e avaliam os produtos com nota e comentário, podendo curtir as avaliações de outros clientes. A empresa acompanha tudo em um dashboard com filtro de período, ranking de mais vendidos e comentários mais curtidos. Projeto ainda em desenvolvimento — algumas telas usam dados de teste. Clique em qualquer imagem abaixo para ver a tela em detalhe.",
         photos: [
-          { src: "assets/projetos/projeto-dois/1.jpg", title: "Tela 1", description: "Descreva aqui o que essa tela faz." },
-          { src: "assets/projetos/projeto-dois/2.jpg", title: "Tela 2", description: "Descreva aqui o que essa tela faz." },
+          {
+            src: "assets/projetos/projeto-dois/home.jpg",
+            title: "Loja (Home)",
+            description: "Vitrine principal do marketplace, onde o cliente descobre e pesquisa produtos de todas as empresas cadastradas no app. A busca filtra a grade em tempo real conforme o cliente digita, sem precisar confirmar a pesquisa, e a lista pode ser atualizada com um gesto de puxar para atualizar.",
+            highlights: ["Busca em tempo real", "Puxar para atualizar a lista", "Contador de itens no carrinho"],
+          },
+          {
+            src: "assets/projetos/projeto-dois/home_busca.jpg",
+            title: "Loja — busca em ação",
+            description: "Mesma tela em um momento anterior do desenvolvimento, com o termo \"Teste\" já digitado no campo de busca: a grade é filtrada na hora, sem precisar confirmar a pesquisa.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-dois/detalhe_produto.jpg",
+            title: "Detalhe do Produto",
+            description: "A página de vendas do produto: carrossel de fotos e vídeos, título, preço, nota média em estrelas, empresa vendedora, categoria e estoque disponível, além de um carrossel de \"produtos parecidos\". Na seção de avaliações, o cliente pode curtir os comentários de outros compradores e deixar sua própria nota e comentário.",
+            highlights: ["Curtir avaliações de outros clientes", "Carrossel de produtos parecidos", "Botão vira \"Sem estoque\" quando o estoque zera", "Só é possível avaliar produto já comprado"],
+          },
+          {
+            src: "assets/projetos/projeto-dois/carrinho.jpg",
+            title: "Carrinho",
+            description: "Confere os itens antes de fechar a compra, com controle de quantidade (+/-) por item e total recalculado automaticamente. Ao finalizar, o app cria o pedido para a empresa vendedora, esvazia o carrinho e confirma com uma mensagem de sucesso.",
+            highlights: ["Remoção individual de itens", "Cria o pedido e limpa o carrinho ao finalizar"],
+          },
+          {
+            src: "assets/projetos/projeto-dois/perfil_cliente.jpg",
+            title: "Perfil — Cliente",
+            description: "Área do usuário cliente, com foto de perfil editável — escolhida na galeria do celular, com recorte quadrado —, nome, e-mail e o selo \"Cliente\". Dá acesso às configurações da conta e à opção de sair.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-dois/dashboard_vendas.jpg",
+            title: "Dashboard — Vendas",
+            description: "Painel de desempenho da empresa, a primeira tela ao entrar. O seletor de período (15 dias, 30 dias, 1 ano) recalcula na hora faturamento, número de pedidos, itens vendidos e avaliação média, além do ranking de produtos mais vendidos e dos comentários mais curtidos pelos clientes.",
+            highlights: ["Indicadores recalculados por período", "Ranking de produtos mais vendidos", "Comentários mais curtidos"],
+          },
+          {
+            src: "assets/projetos/projeto-dois/meus_anuncios.jpg",
+            title: "Meus Anúncios",
+            description: "Gerenciamento central do catálogo da empresa: lista os produtos cadastrados com foto, preço e estoque. Tocar em um produto abre a edição; excluir pede confirmação antes de remover o anúncio.",
+            highlights: ["Toque no produto abre a edição", "Confirmação antes de excluir"],
+          },
+          {
+            src: "assets/projetos/projeto-dois/perfil_empresa.jpg",
+            title: "Perfil — Empresa",
+            description: "Mesma estrutura do perfil de cliente, mas com o selo \"Empresa\" e o nome da loja. A foto de perfil pode ser trocada tanto por contas de empresa quanto por contas de cliente.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-dois/configuracoes.jpg",
+            title: "Configurações",
+            description: "Bloco \"Conta\" com nome, e-mail e tipo de conta (somente leitura), bloco \"Preferências\" com o interruptor de notificações e o botão para sair da conta.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-dois/novo_produto.jpg",
+            title: "Novo Produto",
+            description: "Formulário de cadastro (e edição) de produto, com título, descrição, preço e estoque. Título, descrição, preço e categoria são obrigatórios para salvar.",
+            highlights: [],
+          },
+          {
+            src: "assets/projetos/projeto-dois/novo_produto_categoria.jpg",
+            title: "Novo Produto — Categoria e Mídia",
+            description: "Seleção da categoria em chips (Alimentação, Eletrônicos, Moda e Vestuário, Veículos, entre outras) e botão para criar ou salvar o produto. O envio de fotos e vídeos — até 8 arquivos por vez, com opção de remover cada mídia depois — só é liberado depois que o produto já existe salvo.",
+            highlights: ["Categorias em chips", "Até 8 arquivos de mídia por envio", "Mídia liberada só após salvar o produto"],
+          },
         ],
       },
       {
@@ -428,6 +496,7 @@
         tags: ["Node.js", "Jest"],
         cover: "assets/projetos/projeto-tres/capa.jpg",
         description: "Assim que tiver as fotos e o texto prontos, é só substituir aqui.",
+        comingSoon: true,
         photos: [
           { src: "assets/projetos/projeto-tres/1.jpg", title: "Tela 1", description: "Descreva aqui o que essa tela faz." },
         ],
@@ -507,7 +576,7 @@
           <Card className="masonry-card stack-card">
             <div className="card-label"><span>Talento & stack</span><span className="card-index">02</span></div>
             <h3>Do banco de dados ao pixel.</h3>
-            <p>Full-stack por completo: front, back, testes e IA como parte natural do processo — não só uma ferramenta a mais.</p>
+            <p>Full-stack por completo: front, back, infraestrutura e testes em cada camada — não só a parte visível do projeto.</p>
             {skillGroups.map((group) => (
               <div className="skill-group" key={group.label}>
                 <span className="skill-group-label">{group.label}</span>
@@ -531,12 +600,12 @@
         ),
       },
       {
-        key: "antd",
+        key: "end-to-end",
         children: (
           <Card className="masonry-card">
-            <div className="card-label"><span>Componentes</span><span className="card-index">04</span></div>
-            <h3>Ant Design 6.5</h3>
-            <p>Este próprio portfólio usa o novo Masonry do Ant Design para criar uma narrativa modular, responsiva e menos previsível.</p>
+            <div className="card-label"><span>Como eu trabalho</span><span className="card-index">04</span></div>
+            <h3>Do início ao fim, desenvolvendo soluções.</h3>
+            <p>Entendo o problema, desenho a arquitetura, construo o back-end e o front-end, testo e acompanho até rodar em produção — assumindo a solução como um todo, não só a parte que me cabe.</p>
           </Card>
         ),
       },
@@ -554,8 +623,12 @@
     ];
 
     function ProjectCard({ project, onOpen }) {
+      const disabled = !!project.comingSoon;
       return (
-        <Card className="masonry-card project-card" onClick={() => onOpen(project)}>
+        <Card
+          className={`masonry-card project-card${disabled ? " is-disabled" : ""}`}
+          onClick={disabled ? undefined : () => onOpen(project)}
+        >
           <div className="project-cover">
             <ImageWithFallback
               src={project.cover}
@@ -571,7 +644,11 @@
             <div className="project-tags">
               {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
             </div>
-            <span className="project-open-hint"><ExpandOutlined /> Ver galeria</span>
+            {disabled ? (
+              <span className="project-open-hint is-disabled">Em desenvolvimento</span>
+            ) : (
+              <span className="project-open-hint"><ExpandOutlined /> Ver galeria</span>
+            )}
           </div>
         </Card>
       );
@@ -726,7 +803,7 @@
                   <div className="photo-frame">
                     <img className="profile-photo" src="assets/ghirro.webp" alt="Retrato de Guilherme Ghirro" />
                   </div>
-                  <div className="profile-note">React, HTML e componentes Ant Design com identidade própria.</div>
+                  <div className="profile-note">Do levantamento de requisitos ao deploy, cuidando de cada etapa da solução.</div>
                 </div>
               </div>
               <span className="scroll-note">Role para descobrir</span>
@@ -788,7 +865,7 @@
 
             <footer className="footer">
               <span>© {new Date().getFullYear()} Guilherme Ghirro</span>
-              <span>React · HTML · Ant Design 6.5 · feito com intenção</span>
+              <span>Do início ao fim, com intenção.</span>
             </footer>
           </main>
         </ConfigProvider>
